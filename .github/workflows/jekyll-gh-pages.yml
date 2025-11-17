@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Teradata Chronicles: Zero to Hero</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .step:hover { transform: translateY(-5px); }
+        
+        .step-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+        
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+        
+        .chapter {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .chapter.active { display: block; animation: fadeIn 0.5s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chapter h2 {
+            color: #1e3a8a;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .chapter h3 {
+            color: #3b82f6;
+            font-size: 1.8em;
+            margin: 30px 0 15px;
+        }
+        
+        .story-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-style: italic;
+        }
+        
+        .diagram {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+        
+        .sql-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .sql-box::before {
+            content: 'SQL';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .keyword { color: #fb923c; font-weight: bold; }
+        .string { color: #86efac; }
+        .comment { color: #94a3b8; font-style: italic; }
+        .number { color: #fbbf24; }
+        
+        .infographic {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .info-card h4 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-left: 5px solid #22c55e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .arch-layer {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            border: 2px solid #6366f1;
+        }
+        
+        .arch-boxes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .arch-box {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 2px solid #818cf8;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🚀 The Teradata Chronicles</h1>
+            <p>An Epic Journey from Zero to Hero</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Master the World's Most Powerful Analytics Platform</p>
+        </div>
+        
+        <div class="progress-bar">
+            <h3 style="text-align: center; color: #1e3a8a; margin-bottom: 20px;">Your Learning Roadmap</h3>
+            <div class="progress-steps">
+                <div class="step active" onclick="showChapter(0)">
+                    <div class="step-circle">1</div>
+                    <div style="font-weight: bold;">The Origin</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Foundation</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step" onclick="showChapter(1)">
+                    <div class="step-circle">2</div>
+                    <div style="font-weight: bold;">Architecture</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Core Concepts</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step" onclick="showChapter(2)">
+                    <div class="step-circle">3</div>
+                    <div style="font-weight: bold;">Data Modeling</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Design Mastery</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step" onclick="showChapter(3)">
+                    <div class="step-circle">4</div>
+                    <div style="font-weight: bold;">SQL Magic</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Query Power</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step" onclick="showChapter(4)">
+                    <div class="step-circle">5</div>
+                    <div style="font-weight: bold;">Performance</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Optimization</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step" onclick="showChapter(5)">
+                    <div class="step-circle">6</div>
+                    <div style="font-weight: bold;">Cloud & AI</div>
+                    <div style="font-size: 0.9em; color: #64748b;">Modern Era</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHAPTER 1: THE ORIGIN -->
+        <div class="chapter active" id="chapter-0">
+            <h2>📖 Chapter 1: The Origin Story - "The Birth of Parallel Power"</h2>
+            
+            <div class="story-box">
+                <p><strong>🏛️ Year 1979, California...</strong></p>
+                <p>In the bustling corridors of Caltech and Citibank's innovation labs, a revolutionary idea was born. Traditional databases were choking on data. A single query could bring systems to their knees. But what if... what if we could break a problem into pieces and solve them ALL AT ONCE?</p>
+                <p><em>"Why wait for one cook to make 100 burgers when 100 cooks can make them simultaneously?"</em> - This simple analogy sparked the Massively Parallel Processing (MPP) revolution that would become Teradata.</p>
+            </div>
+
+            <h3>🎯 What is Teradata?</h3>
+            <p>Teradata is an <strong>enterprise-class relational database management system (RDBMS)</strong> designed specifically for:</p>
+            
+            <div class="infographic">
+                <div class="info-card">
+                    <h4>🌊 Big Data Analytics</h4>
+                    <p>Process petabytes with ease</p>
+                </div>
+                <div class="info-card">
+                    <h4>⚡ Parallel Processing</h4>
+                    <p>Divide and conquer queries</p>
+                </div>
+                <div class="info-card">
+                    <h4>🎯 Data Warehousing</h4>
+                    <p>Enterprise-scale solutions</p>
+                </div>
+                <div class="info-card">
+                    <h4>🤖 AI/ML Ready</h4>
+                    <p>Built-in analytics power</p>
+                </div>
+            </div>
+
+            <h3>🏗️ The Teradata Philosophy</h3>
+            <div class="diagram">
+                <div style="text-align: center; font-size: 1.2em; font-weight: bold; color: #1e3a8a; margin-bottom: 20px;">
+                    Core Principles of Teradata
+                </div>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 200px; padding: 15px; background: #dbeafe; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                        <strong>Parallelism</strong><br>
+                        Everything happens simultaneously
+                    </div>
+                    <div style="flex: 1; min-width: 200px; padding: 15px; background: #dbeafe; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                        <strong>Shared Nothing</strong><br>
+                        No resource contention
+                    </div>
+                    <div style="flex: 1; min-width: 200px; padding: 15px; background: #dbeafe; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                        <strong>Linear Scalability</strong><br>
+                        Double nodes = Double power
+                    </div>
+                </div>
+            </div>
+
+            <h3>🌟 Teradata Evolution Timeline</h3>
+            <div class="sql-box">
+<pre><span class="comment">/* The Journey Through Time */</span>
+
+<span class="keyword">1979:</span> <span class="string">Teradata Corporation founded</span>
+<span class="keyword">1984:</span> <span class="string">DBC/1012 - First MPP database machine</span>
+<span class="keyword">1992:</span> <span class="string">First 1 Terabyte system for Walmart</span>
+<span class="keyword">2007:</span> <span class="string">Spin-off from NCR, becomes independent</span>
+<span class="keyword">2017:</span> <span class="string">Teradata Analytics Platform launched</span>
+<span class="keyword">2020:</span> <span class="string">VantageCloud - Cloud-native platform</span>
+<span class="keyword">2024:</span> <span class="string">AI/ML Integration - ClearScape Analytics</span>
+<span class="keyword">2025:</span> <span class="string">AgentBuilder & ModelOps - Agentic AI Era</span>
+</pre>
+            </div>
+
+            <h3>🎓 Why Learn Teradata?</h3>
+            <div class="tip-box">
+                <strong>💡 Real-World Impact:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>Fortune 500 Companies:</strong> 80%+ use Teradata for critical analytics</li>
+                    <li><strong>Banking & Finance:</strong> Fraud detection in milliseconds across billions of transactions</li>
+                    <li><strong>Retail Giants:</strong> Walmart, Target - Real-time inventory & customer insights</li>
+                    <li><strong>Healthcare:</strong> Patient care optimization across hospital networks</li>
+                    <li><strong>Telecommunications:</strong> Network optimization and customer churn prediction</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" disabled>← Previous</button>
+                <button class="btn" onclick="showChapter(1)">Next: Architecture →</button>
+            </div>
+        </div>
+
+        <!-- CHAPTER 2: ARCHITECTURE -->
+        <div class="chapter" id="chapter-1">
+            <h2>🏛️ Chapter 2: The Architecture - "Inside the Parallel Universe"</h2>
+            
+            <div class="story-box">
+                <p><strong>🔍 Imagine a massive library...</strong></p>
+                <p>Traditional databases? One librarian serving everyone - chaos and queues!</p>
+                <p>Teradata? 100 librarians, each owning their section, working simultaneously. Need info? ALL of them search at once and combine results in seconds!</p>
+            </div>
+
+            <h3>🎨 The Teradata Architecture Masterpiece</h3>
+            <div class="diagram">
+                <div class="architecture-diagram">
+                    <div class="arch-layer">
+                        <strong style="color: #1e3a8a;">👤 PRESENTATION LAYER</strong>
+                        <div class="arch-boxes">
+                            <div class="arch-box">Teradata Studio</div>
+                            <div class="arch-box">SQL Clients</div>
+                            <div class="arch-box">APIs</div>
+                            <div class="arch-box">BI Tools</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-size: 2em;">↓</div>
+                    <div class="arch-layer">
+                        <strong style="color: #1e3a8a;">🧠 PARSING ENGINE (PE)</strong>
+                        <div class="arch-boxes">
+                            <div class="arch-box">Parser</div>
+                            <div class="arch-box">Optimizer</div>
+                            <div class="arch-box">Dispatcher</div>
+                        </div>
+                        <p style="margin-top: 10px; text-align: center; font-style: italic;">The "Brain" - Plans the attack strategy</p>
+                    </div>
+                    <div style="text-align: center; font-size: 2em;">↓</div>
+                    <div class="arch-layer">
+                        <strong style="color: #1e3a8a;">🌐 BYNET (Interconnect)</strong>
+                        <div class="arch-boxes">
+                            <div class="arch-box">Message Passing</div>
+                            <div class="arch-box">Load Balancing</div>
+                        </div>
+                        <p style="margin-top: 10px; text-align: center; font-style: italic;">The "Nervous System" - Ultra-fast communication</p>
+                    </div>
+                    <div style="text-align: center; font-size: 2em;">↓</div>
+                    <div class="arch-layer">
+                        <strong style="color: #1e3a8a;">💪 AMPS (Access Module Processors)</strong>
+                        <div class="arch-boxes">
+                            <div class="arch-box">AMP 1</div>
+                            <div class="arch-box">AMP 2</div>
+                            <div class="arch-box">AMP 3</div>
+                            <div class="arch-box">...</div>
+                            <div class="arch-box">AMP N</div>
+                        </div>
+                        <p style="margin-top: 10px; text-align: center; font-style: italic;">The "Workers" - Do the actual work in parallel</p>
+                    </div>
+                    <div style="text-align: center; font-size: 2em;">↓</div>
+                    <div class="arch-layer" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #f59e0b;">
+                        <strong style="color: #92400e;">💾 STORAGE (Virtual Disks)</strong>
+                        <div class="arch-boxes">
+                            <div class="arch-box" style="border-color: #f59e0b;">VDisk 1</div>
+                            <div class="arch-box" style="border-color: #f59e0b;">VDisk 2</div>
+                            <div class="arch-box" style="border-color: #f59e0b;">VDisk 3</div>
+                            <div class="arch-box" style="border-color: #f59e0b;">...</div>
+                            <div class="arch-box" style="border-color: #f59e0b;">VDisk N</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔑 Key Components Explained</h3>
+            
+            <h4>1️⃣ Parsing Engine (PE) - The Strategist</h4>
+            <div class="tip-box">
+                <strong>Role:</strong> Your SQL query's first stop!
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Parse:</strong> Checks syntax - "Is this valid SQL?"</li>
+                    <li><strong>Optimize:</strong> Creates the BEST execution plan (like chess grandmaster)</li>
+                    <li><strong>Dispatch:</strong> Breaks query into parallel steps and sends to AMPs</li>
+                </ul>
+            </div>
+
+            <h4>2️⃣ BYNET - The Communication Highway</h4>
+            <div class="tip-box">
+                <strong>Think of it as:</strong> Ultra-fast internal internet
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Connects PE to all AMPs</li>
+                    <li>Connects AMPs to each other</li>
+                    <li>No bottlenecks - fully redundant</li>
+                    <li>Bandwidth scales with system size</li>
+                </ul>
+            </div>
+
+            <h4>3️⃣ AMPs (Access Module Processors) - The Workhorses</h4>
+            <div class="tip-box">
+                <strong>The Magic Happens Here!</strong>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Each AMP owns a portion of data (no sharing!)</li>
+                    <li>All AMPs work simultaneously on their data slice</li>
+                    <li>Typical systems: 50 to 1000+ AMPs</li>
+                    <li>Each AMP has its own CPU, memory, and storage</li>
+                </ul>
+            </div>
+
+            <h3>🎯 How a Query Flows - The Journey</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Let's trace this query through Teradata!</span>
+
+<span class="keyword">SELECT</span> customer_name, <span class="keyword">SUM</span>(order_total)
+<span class="keyword">FROM</span> sales
+<span class="keyword">WHERE</span> order_date <span class="keyword">BETWEEN</span> <span class="string">'2024-01-01'</span> <span class="keyword">AND</span> <span class="string">'2024-12-31'</span>
+<span class="keyword">GROUP BY</span> customer_name
+<span class="keyword">HAVING</span> <span class="keyword">SUM</span>(order_total) <span class="keyword">></span> <span class="number">10000</span>
+<span class="keyword">ORDER BY</span> <span class="keyword">SUM</span>(order_total) <span class="keyword">DESC</span>;
+
+<span class="comment">/* 
+STEP-BY-STEP EXECUTION:
+
+1. PARSING ENGINE receives query
+   ✓ Validates syntax
+   ✓ Checks security permissions
+   ✓ Resolves table/column names
+   
+2. OPTIMIZER creates plan
+   ✓ Analyzes statistics
+   ✓ Considers indexes
+   ✓ Chooses best join methods
+   ✓ Determines redistribution strategy
+   
+3. DISPATCHER sends plan to ALL AMPs via BYNET
+   
+4. EACH AMP (in parallel):
+   ✓ Scans its portion of 'sales' table
+   ✓ Filters rows by date range
+   ✓ Partial aggregation (local GROUP BY)
+   
+5. BYNET redistributes data
+   ✓ Ensures all data for same customer goes to same AMP
+   
+6. EACH AMP (in parallel):
+   ✓ Final aggregation
+   ✓ Applies HAVING filter
+   
+7. One AMP (spool master):
+   ✓ Merges sorted results from all AMPs
+   ✓ Returns to PE
+   
+8. PE sends result to client
+
+TOTAL TIME: 100 AMPs = ~100x faster than single processor!
+*/</span>
+</pre>
+            </div>
+
+            <h3>⚡ The "Shared Nothing" Architecture</h3>
+            <div class="infographic">
+                <div class="info-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <h4>✅ Each AMP Has</h4>
+                    <p>Its OWN CPU</p>
+                    <p>Its OWN Memory</p>
+                    <p>Its OWN Disk</p>
+                    <p>NO CONFLICTS!</p>
+                </div>
+                <div class="info-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                    <h4>❌ What It Doesn't Share</h4>
+                    <p>No shared memory</p>
+                    <p>No shared CPU</p>
+                    <p>No lock contention</p>
+                    <p>NO BOTTLENECKS!</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Important Concept: Linear Scalability</strong><br>
+                Need more power? Add more AMPs!
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>10 AMPs = 10x power</li>
+                    <li>100 AMPs = 100x power</li>
+                    <li>1000 AMPs = 1000x power</li>
+                </ul>
+                This is TRUE linear scalability - almost unheard of in databases!
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" onclick="showChapter(0)">← Previous: Origin</button>
+                <button class="btn" onclick="showChapter(2)">Next: Data Modeling →</button>
+            </div>
+        </div>
+
+        <!-- CHAPTER 3: DATA MODELING -->
+        <div class="chapter" id="chapter-2">
+            <h2>🎨 Chapter 3: Data Modeling - "The Art of Distribution"</h2>
+            
+            <div class="story-box">
+                <p><strong>🎲 The Distribution Dilemma...</strong></p>
+                <p>You have 1 billion rows and 100 AMPs. How do you split the data fairly so EVERY AMP has equal work? This is the heart of Teradata performance!</p>
+                <p><em>"A chain is only as strong as its weakest link. In Teradata, a query is only as fast as the slowest AMP!"</em></p>
+            </div>
+
+            <h3>🔑 Primary Index (PI) - The Master Key</h3>
+            <p>The <span class="highlight">Primary Index</span> is THE MOST CRITICAL decision in Teradata design!</p>
+
+            <div class="tip-box">
+                <strong>What Primary Index Does:</strong>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Determines Data Distribution:</strong> PI value → Hash → AMP assignment</li>
+                    <li><strong>Physical Row Location:</strong> Not an index in traditional sense!</li>
+                    <li><strong>Access Path:</strong> Know PI = instant row location (1-AMP operation)</li>
+                </ol>
+            </div>
+
+            <h3>🎯 Types of Primary Index</h3>
+            
+            <h4>1️⃣ Unique Primary Index (UPI)</h4>
+            <div class="sql-box">
+<pre><span class="comment">-- IDEAL for transactional lookups!</span>
+
+<span class="keyword">CREATE TABLE</span> customers (
+    customer_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    customer_name <span class="keyword">VARCHAR</span>(<span class="number">100</span>),
+    email <span class="keyword">VARCHAR</span>(<span class="number">100</span>),
+    signup_date <span class="keyword">DATE</span>
+)
+<span class="keyword">UNIQUE PRIMARY INDEX</span> (customer_id);
+
+<span class="comment">/* 
+HOW IT WORKS:
+1. customer_id = 12345
+2. Hash(12345) = Some number
+3. Number MOD (number of AMPs) = AMP #37
+4. Row stored ONLY on AMP #37
+5. Query by customer_id? Go directly to AMP #37!
+
+⚡ RESULT: Single AMP access = BLAZING FAST!
+✅ Perfect for: Primary key lookups
+❌ Avoid when: Heavy batch analytics on other columns
+*/</span>
+</pre>
+            </div>
+
+            <h4>2️⃣ Non-Unique Primary Index (NUPI)</h4>
+            <div class="sql-box">
+<pre><span class="comment">-- IDEAL for analytics with common values!</span>
+
+<span class="keyword">CREATE TABLE</span> sales_transactions (
+    transaction_id <span class="keyword">INTEGER</span>,
+    customer_id <span class="keyword">INTEGER</span>,
+    product_id <span class="keyword">INTEGER</span>,
+    sale_date <span class="keyword">DATE</span>,
+    amount <span class="keyword">DECIMAL</span>(<span class="number">10,2</span>)
+)
+<span class="keyword">PRIMARY INDEX</span> (customer_id);  <span class="comment">-- NUPI: multiple transactions per customer</span>
+
+<span class="comment">/* 
+WHY NUPI HERE?
+- Each customer has MANY transactions
+- All transactions for a customer on SAME AMP
+- Queries like "customer purchase history" = 1-AMP operation!
+
+DISTRIBUTION:
+Customer 1001 → Hash → AMP 5   (all their transactions)
+Customer 1002 → Hash → AMP 23  (all their transactions)
+Customer 1003 → Hash → AMP 5   (shares with 1001, different rows)
+*/</span>
+
+<span class="comment">-- Lightning-fast query!</span>
+<span class="keyword">SELECT</span> <span class="keyword">*</span> <span class="keyword">FROM</span> sales_transactions 
+<span class="keyword">WHERE</span> customer_id <span class="keyword">=</span> <span class="number">1001</span>;  <span class="comment">-- Single AMP access!</span>
+</pre>
+            </div>
+
+            <h4>3️⃣ No Primary Index (NoPI)</h4>
+            <div class="sql-box">
+<pre><span class="comment">-- For staging tables and special cases</span>
+
+<span class="keyword">CREATE TABLE</span> staging_data (
+    record_id <span class="keyword">INTEGER</span>,
+    data_field1 <span class="keyword">VARCHAR</span>(<span class="number">100</span>),
+    data_field2 <span class="keyword">VARCHAR</span>(<span class="number">100</span>),
+    load_timestamp <span class="keyword">TIMESTAMP</span>
+)
+<span class="keyword">NO PRIMARY INDEX</span>;
+
+<span class="comment">/* 
+USE CASES:
+✅ ETL staging tables (fast loads!)
+✅ Tables always accessed via joins
+✅ Small lookup tables
+✅ Temporary work tables
+
+DISTRIBUTION: Round-robin across AMPs
+- Row 1 → AMP 1
+- Row 2 → AMP 2
+- Row 3 → AMP 3
+- ...cycle repeats
+
+⚡ FAST INSERTS: No hash calculation overhead!
+❌ SLOW SELECT: Must scan ALL AMPs for any query
+*/</span>
+</pre>
+            </div>
+
+            <h3>🎨 Choosing the RIGHT Primary Index</h3>
+            <div class="infographic">
+                <div class="info-card">
+                    <h4>📊 Analytics Heavy</h4>
+                    <p><strong>Choose:</strong> NUPI on most-queried column</p>
+                    <p>Examples: customer_id, product_id, date_key</p>
+                </div>
+                <div class="info-card">
+                    <h4>🔍 Transactional</h4>
+                    <p><strong>Choose:</strong> UPI on unique key</p>
+                    <p>Examples: order_id, customer_id, account_id</p>
+                </div>
+                <div class="info-card">
+                    <h4>⚖️ Even Distribution</h4>
+                    <p><strong>Choose:</strong> High cardinality column</p>
+                    <p>Avoid: country (skewed!)</p>
+                    <p>Prefer: customer_id (unique!)</p>
+                </div>
+                <div class="info-card">
+                    <h4>🔗 Join Performance</h4>
+                    <p><strong>Choose:</strong> Same PI as join partner</p>
+                    <p>Co-located data = No redistribution!</p>
+                </div>
+            </div>
+
+            <h3>⚠️ Primary Index Anti-Patterns</h3>
+            <div class="warning-box">
+                <strong>🚫 NEVER use these as Primary Index:</strong>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Low Cardinality:</strong> status (few values) → All rows on few AMPs!</li>
+                    <li><strong>Nullable Columns:</strong> NULLs all go to one AMP → Skew disaster!</li>
+                    <li><strong>Sequential Values:</strong> Auto-increment → New rows always same AMP!</li>
+                    <li><strong>Date Columns Alone:</strong> Current date → All today's data on one AMP!</li>
+                </ul>
+            </div>
+
+            <h3>🎯 Real-World Example: E-Commerce Schema</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- ORDERS Table: Customer-centric analytics</span>
+<span class="keyword">CREATE TABLE</span> orders (
+    order_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    customer_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    order_date <span class="keyword">DATE</span>,
+    total_amount <span class="keyword">DECIMAL</span>(<span class="number">10,2</span>)
+)
+<span class="keyword">PRIMARY INDEX</span> (customer_id);  <span class="comment">-- NUPI for customer history queries</span>
+
+<span class="comment">-- ORDER_ITEMS Table: Match orders for efficient joins</span>
+<span class="keyword">CREATE TABLE</span> order_items (
+    order_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    item_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    product_id <span class="keyword">INTEGER</span>,
+    quantity <span class="keyword">INTEGER</span>,
+    price <span class="keyword">DECIMAL</span>(<span class="number">10,2</span>)
+)
+<span class="keyword">PRIMARY INDEX</span> (order_id);  <span class="comment">-- Co-located with orders!</span>
+
+<span class="comment">-- PRODUCTS Table: Product-centric</span>
+<span class="keyword">CREATE TABLE</span> products (
+    product_id <span class="keyword">INTEGER</span> <span class="keyword">NOT NULL</span>,
+    product_name <span class="keyword">VARCHAR</span>(<span class="number">200</span>),
+    category <span class="keyword">VARCHAR</span>(<span class="number">50</span>),
+    price <span class="keyword">DECIMAL</span>(<span class="number">10,2</span>)
+)
+<span class="keyword">UNIQUE PRIMARY INDEX</span> (product_id);  <span class="comment">-- UPI for product lookups</span>
+
+<span class="comment">/* 
+QUERY OPTIMIZATION MAGIC:
+
+-- Customer order history: 1-AMP operation!
+SELECT * FROM orders WHERE customer_id = 12345;
+
+-- Order details: Local join (no redistribution!)
+SELECT o.*, oi.*
+FROM orders o
+INNER JOIN order_items oi ON o.order_id = oi.order_id
+WHERE o.customer_id = 12345;  -- Same AMP has both!
+*/</span>
+</pre>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" onclick="showChapter(1)">← Previous: Architecture</button>
+                <button class="btn" onclick="showChapter(3)">Next: SQL Magic →</button>
+            </div>
+        </div>
+
+        <!-- CHAPTER 4: SQL MAGIC -->
+        <div class="chapter" id="chapter-3">
+            <h2>✨ Chapter 4: SQL Magic - "Teradata's Superpowers"</h2>
+            
+            <div class="story-box">
+                <p><strong>🧙‍♂️ The Power Unleashed...</strong></p>
+                <p>Teradata SQL isn't just SQL - it's SQL on steroids! With temporal queries, advanced analytics, and parallel execution, you'll solve problems in ONE query that would take hundreds of lines elsewhere.</p>
+            </div>
+
+            <h3>⏰ Temporal Tables - Time Travel for Data!</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Track EVERY change automatically!</span>
+
+<span class="keyword">CREATE TABLE</span> product_prices (
+    product_id <span class="keyword">INTEGER</span>,
+    price <span class="keyword">DECIMAL</span>(<span class="number">10,2</span>),
+    valid_from <span class="keyword">TIMESTAMP</span>(<span class="number">6</span>) <span class="keyword">GENERATED ALWAYS AS ROW BEGIN</span>,
+    valid_to <span class="keyword">TIMESTAMP</span>(<span class="number">6</span>) <span class="keyword">GENERATED ALWAYS AS ROW END</span>,
+    trans_time <span class="keyword">PERIOD FOR SYSTEM_TIME</span>
+)
+<span class="keyword">PRIMARY INDEX</span> (product_id);
+
+<span class="comment">-- Update price (Teradata handles history automatically!)</span>
+<span class="keyword">UPDATE</span> product_prices 
+<span class="keyword">SET</span> price <span class="keyword">=</span> <span class="number">29.99</span> 
+<span class="keyword">WHERE</span> product_id <span class="keyword">=</span> <span class="number">100</span>;
+
+<span class="comment">-- Query price AS OF any point in time!</span>
+<span class="keyword">SELECT</span> product_id, price
+<span class="keyword">FROM</span> product_prices
+<span class="keyword">FOR SYSTEM_TIME AS OF</span> <span class="keyword">TIMESTAMP</span> <span class="string">'2024-01-01 00:00:00'</span>
+<span class="keyword">WHERE</span> product_id <span class="keyword">=</span> <span class="number">100</span>;
+
+<span class="comment">-- What was the price DURING a period?</span>
+<span class="keyword">SELECT</span> product_id, price, valid_from, valid_to
+<span class="keyword">FROM</span> product_prices
+<span class="keyword">FOR SYSTEM_TIME FROM</span> <span class="string">'2024-01-01'</span> <span class="keyword">TO</span> <span class="string">'2024-12-31'</span>
+<span class="keyword">WHERE</span> product_id <span class="keyword">=</span> <span class="number">100</span>;
+
+<span class="comment">/* NO MANUAL HISTORY TABLES! NO TRIGGERS! MAGIC! ✨ */</span>
+</pre>
+            </div>
+
+            <h3>📊 Window Functions - Analytics Powerhouse</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Ranking, Moving Averages, Cumulative Sums - all in ONE scan!</span>
+
+<span class="keyword">SELECT</span> 
+    order_date,
+    customer_id,
+    order_amount,
+    <span class="comment">-- Running total</span>
+    <span class="keyword">SUM</span>(order_amount) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> customer_id 
+        <span class="keyword">ORDER BY</span> order_date
+        <span class="keyword">ROWS UNBOUNDED PRECEDING</span>
+    ) <span class="keyword">AS</span> cumulative_spend,
+    
+    <span class="comment">-- 30-day moving average</span>
+    <span class="keyword">AVG</span>(order_amount) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> customer_id 
+        <span class="keyword">ORDER BY</span> order_date
+        <span class="keyword">ROWS BETWEEN</span> <span class="number">29</span> <span class="keyword">PRECEDING AND CURRENT ROW</span>
+    ) <span class="keyword">AS</span> moving_avg_30day,
+    
+    <span class="comment">-- Customer ranking by spend</span>
+    <span class="keyword">RANK</span>() <span class="keyword">OVER</span> (
+        <span class="keyword">ORDER BY SUM</span>(order_amount) <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> customer_rank,
+    
+    <span class="comment">-- Quartile classification</span>
+    <span class="keyword">NTILE</span>(<span class="number">4</span>) <span class="keyword">OVER</span> (
+        <span class="keyword">ORDER BY SUM</span>(order_amount) <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> spend_quartile
+    
+<span class="keyword">FROM</span> orders
+<span class="keyword">WHERE</span> order_date <span class="keyword">>=</span> <span class="keyword">CURRENT_DATE</span> <span class="keyword">-</span> <span class="number">365</span>
+<span class="keyword">ORDER BY</span> customer_id, order_date;
+
+<span class="comment">/* All calculated in ONE PASS! Each AMP processes its data! */</span>
+</pre>
+            </div>
+
+            <h3>🎯 Advanced JOIN Strategies</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Teradata's optimizer chooses the BEST method</span>
+
+<span class="comment">/* 1. MERGE JOIN - When both tables sorted on join key */</span>
+<span class="keyword">SELECT</span> <span class="keyword">/*+ USE_MERGE_JOIN */</span> 
+    o.order_id, c.customer_name
+<span class="keyword">FROM</span> orders o
+<span class="keyword">INNER JOIN</span> customers c <span class="keyword">ON</span> o.customer_id <span class="keyword">=</span> c.customer_id;
+
+<span class="comment">/* 2. HASH JOIN - Most common, excellent for large tables */</span>
+<span class="keyword">SELECT</span> 
+    p.product_name,
+    <span class="keyword">SUM</span>(oi.quantity) <span class="keyword">as</span> total_sold
+<span class="keyword">FROM</span> order_items oi
+<span class="keyword">INNER JOIN</span> products p <span class="keyword">ON</span> oi.product_id <span class="keyword">=</span> p.product_id
+<span class="keyword">GROUP BY</span> p.product_name;
+
+<span class="comment">/* 3. NESTED JOIN - Small table joins */</span>
+<span class="comment">/* Teradata automatically replicates small tables to all AMPs! */</span>
+
+<span class="comment">/* 4. PRODUCT JOIN - Use cautiously! */</span>
+<span class="comment">-- Cartesian product when no join condition</span>
+</pre>
+            </div>
+
+            <h3>🚀 QUALIFY - Teradata's Secret Weapon</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Filter AFTER window functions (like HAVING for windows!)</span>
+
+<span class="keyword">SELECT</span> 
+    customer_id,
+    order_date,
+    order_amount,
+    <span class="keyword">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> customer_id 
+        <span class="keyword">ORDER BY</span> order_date <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> order_recency
+<span class="keyword">FROM</span> orders
+<span class="keyword">QUALIFY</span> order_recency <span class="keyword"><=</span> <span class="number">3</span>;  <span class="comment">-- Last 3 orders per customer!</span>
+
+<span class="comment">/* Why QUALIFY is genius:
+   - No subquery needed!
+   - No derived table!
+   - More efficient execution plan!
+*/</span>
+
+<span class="comment">-- Another example: Top spender per region</span>
+<span class="keyword">SELECT</span> 
+    region,
+    customer_name,
+    total_spend,
+    <span class="keyword">RANK</span>() <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> region 
+        <span class="keyword">ORDER BY</span> total_spend <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> regional_rank
+<span class="keyword">FROM</span> customer_summary
+<span class="keyword">QUALIFY</span> regional_rank <span class="keyword">=</span> <span class="number">1</span>;  <span class="comment">-- Only top spender per region!</span>
+</pre>
+            </div>
+
+            <h3>🔗 RECURSIVE Queries - Complex Hierarchies Made Easy</h3>
+            <div class="sql-box">
+<pre><span class="comment">-- Employee hierarchy traversal</span>
+
+<span class="keyword">WITH RECURSIVE</span> emp_hierarchy (
+    employee_id, 
+    employee_name, 
+    manager_id, 
+    level_num,
+    hierarchy_path
+) <span class="keyword">AS</span> (
+    <span class="comment">-- Base case: Top level (CEO)</span>
+    <span class="keyword">SELECT</span> 
+        employee_id,
+        employee_name,
+        manager_id,
+        <span class="number">1</span> <span class="keyword">as</span> level_num,
+        <span class="keyword">CAST</span>(employee_name <span class="keyword">AS VARCHAR</span>(<span class="number">1000</span>)) <span class="keyword">as</span> hierarchy_path
+    <span class="keyword">FROM</span> employees
+    <span class="keyword">WHERE</span> manager_id <span class="keyword">IS NULL</span>
+    
+    <span class="keyword">UNION ALL</span>
+    
+    <span class# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
